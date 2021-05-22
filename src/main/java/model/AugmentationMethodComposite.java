@@ -10,11 +10,6 @@ public class AugmentationMethodComposite extends AugmentationMethod {
         super(AugmentationMethodType.COMPOSITE, name);
     }
 
-    public AugmentationMethodComposite(String name, Vector<AugmentationMethod> methods) {
-        super(AugmentationMethodType.COMPOSITE, name);
-        this.methods = methods;
-    }
-
     @Override
     public void run() {
         Vector<BufferedImage> tempStorage = storageInput;
@@ -59,9 +54,5 @@ public class AugmentationMethodComposite extends AugmentationMethod {
 
     public void add(AugmentationMethod method) {
         this.methods.add(method);
-    }
-
-    public void remove(AugmentationMethod method) {
-        this.methods.remove(method);
     }
 }

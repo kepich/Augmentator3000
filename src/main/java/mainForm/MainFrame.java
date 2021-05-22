@@ -1,8 +1,8 @@
 package mainForm;
 
 import model.AugmentationMethod;
-import model.BrightnessMethod;
-import model.ScalingMethod;
+import model.brightness.BrightnessMethod;
+import model.scaling.ScalingMethod;
 
 import javax.swing.*;
 import java.awt.*;

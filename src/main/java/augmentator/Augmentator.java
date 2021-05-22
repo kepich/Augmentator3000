@@ -64,7 +64,7 @@ public class Augmentator {
                 BufferedImage image = this.selectedMethod.storage.get(tempNumber);
                 this.selectedMethod.storage.set(tempNumber, null);
 
-                out = new File(path + "\\" + this.selectedMethod.getMethodName() + "_" + tempNumber + ".jpg");
+                out = new File(path + "\\" + this.selectedMethod.name + "_" + tempNumber + ".jpg");
 
                 try {
                     ImageIO.write(image, "jpg", out);

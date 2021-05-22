@@ -1,7 +1,7 @@
 package methodBank.customizers;
 
 import model.AugmentationMethod;
-import model.BrightnessMethod;
+import model.brightness.BrightnessMethod;
 import utils.InputNumberPanel;
 import utils.MyLogger;
 

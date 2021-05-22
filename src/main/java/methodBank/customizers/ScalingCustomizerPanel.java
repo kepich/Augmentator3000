@@ -1,7 +1,7 @@
 package methodBank.customizers;
 
 import model.AugmentationMethod;
-import model.ScalingMethod;
+import model.scaling.ScalingMethod;
 import utils.InputNumberPanel;
 import utils.MyLogger;
 

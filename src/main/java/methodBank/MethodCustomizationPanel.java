@@ -49,7 +49,7 @@ public class MethodCustomizationPanel extends JPanel {
 
     public void showPanel(AugmentationMethod augmentationMethod){
         hideAll();
-        switch (augmentationMethod.getType()) {
+        switch (augmentationMethod.type) {
             case SCALING -> {
                 this.setVisible(true);
                 scalingCustomizerPanel.setVisible(true);
