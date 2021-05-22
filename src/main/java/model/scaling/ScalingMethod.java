@@ -38,6 +38,13 @@ public class ScalingMethod extends AugmentationMethod {
                 threads.add(thread);
 
                 waitAllThreads();
+
+                if(yScaleFrom == yScaleTo){
+                    break;
+                }
+            }
+            if(xScaleFrom == xScaleTo){
+                break;
             }
         }
         joinAllThreads();

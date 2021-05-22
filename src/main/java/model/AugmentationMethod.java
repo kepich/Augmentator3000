@@ -51,7 +51,6 @@ public abstract class AugmentationMethod implements Cloneable, Serializable, Run
             for(Thread t_thread: threads){
                 try {
                     t_thread.join();
-                    System.out.println("Killed");
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -66,7 +65,6 @@ public abstract class AugmentationMethod implements Cloneable, Serializable, Run
         for(Thread t_thread: threads){
             try {
                 t_thread.join();
-                System.out.println("Killed");
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
