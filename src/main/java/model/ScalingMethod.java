@@ -34,44 +34,45 @@ public class ScalingMethod extends AugmentationMethod {
     protected void modifyImage(BufferedImage image){
         for (float xScale = xScaleFrom; xScale <= xScaleTo; xScale += xScaleStep) {
             for (float yScale = yScaleFrom; yScale <= yScaleTo; yScale += yScaleStep) {
-                final float xScaleFinal = xScale;
-                final float yScaleFinal = yScale;
+                float finalXScale = xScale;
+                float finalYScale = yScale;
 
                 Thread thread = new Thread(() -> {
-                    double xMul, yMul;
-                    int newWidth, newHeight, newY;
+                    double xMul = Math.exp(finalXScale);
+                    double yMul = Math.exp(finalYScale);
+
+                    int resultWidth = (int) (image.getWidth() * xMul);
+                    int resultHeight = (int) (image.getHeight() * yMul);
+
                     int oldWidth = image.getWidth();
-                    BufferedImage resultImage;
+                    BufferedImage resultImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_RGB);
 
-                    xMul = Math.exp(xScaleFinal);
-                    yMul = Math.exp(yScaleFinal);
+                    byte[] dataSourceImage = ((DataBufferByte)(image.getRaster().getDataBuffer())).getData();
+                    int[] dataResultImage = ((DataBufferInt)(resultImage.getRaster().getDataBuffer())).getData();
 
-                    newWidth = (int) (image.getWidth() * xMul);
-                    newHeight = (int) (image.getHeight() * yMul);
+                    Kernel kernel = new Kernel() {
+                        @Override
+                        public void run() {
+                            int gid = getGlobalId();
 
-                    resultImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-                    for (int row = 0; row < newHeight; row++) {
-                        newY = (int) (row / yMul);
+                            int resultRow = gid / resultWidth;
+                            int resultCol = gid % resultWidth;
 
-                        int finalRow = row * newWidth;
-                        int finalNewY = newY * oldWidth;
-                        byte[] dataImage = ((DataBufferByte)(image.getRaster().getDataBuffer())).getData();
-                        int[] dataResultImage = ((DataBufferInt)(resultImage.getRaster().getDataBuffer())).getData();
-                        Kernel kernel = new Kernel() {
-                            @Override
-                            public void run() {
-                                int i = getGlobalId();
-                                dataResultImage[finalRow + i] =
-                                        dataImage[(finalNewY + (int) (i / xMul)) * 3] +
-                                        (dataImage[(finalNewY + (int) (i / xMul)) * 3 + 1] << 8) +
-                                        (dataImage[(finalNewY + (int) (i / xMul)) * 3 + 2] << 16);
-                              // resultImage.setRGB(i, finalRow, image.getRGB((int) (i / xMul), finalNewY));
-                            }
-                        };
-                        Range range = Range.create(newWidth);
-                        kernel.execute(range);
-                        kernel.dispose();
-                    }
+                            int sourceRow = (int) (resultRow / yMul);
+                            int sourceCol = (int) (resultCol / xMul);
+
+                            dataResultImage[resultRow * resultWidth + resultCol] =
+                                    dataSourceImage[(sourceRow * oldWidth + sourceCol) * 3] +
+                                            (dataSourceImage[(sourceRow * oldWidth + sourceCol) * 3 + 1] << 8) +
+                                            (dataSourceImage[(sourceRow * oldWidth + sourceCol) * 3 + 2] << 16);
+                            // resultImage.setRGB(i, finalRow, image.getRGB((int) (i / xMul), finalNewY));
+                        }
+                    };
+
+                    Range range = Range.create(dataResultImage.length);
+                    kernel.execute(range);
+                    kernel.dispose();
+
                     writeFile(resultImage);
                 });
 
@@ -79,6 +80,14 @@ public class ScalingMethod extends AugmentationMethod {
                 threads.add(thread);
 
                 waitAllThreads();
+
+                if(yScaleFrom == yScaleTo){
+                    break;
+                }
+            }
+
+            if(xScaleFrom == xScaleTo){
+                break;
             }
         }
         joinAllThreads();

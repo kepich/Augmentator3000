@@ -1,5 +1,7 @@
 package model;
 
+import utils.MyLogger;
+
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.Vector;
@@ -29,14 +31,15 @@ public abstract class AugmentationMethod implements Cloneable, Serializable, Run
     @Override
     public void run() {
         int tempNumber = 0;
-
+        long start, timeElapsed;
         while(tempNumber < maxInputSize){
             if (storageInput.size() > tempNumber){
                 BufferedImage image = storageInput.get(tempNumber);
                 storageInput.set(tempNumber++, null);
-                System.out.println("Start modifying");
+                start = System.nanoTime();
                 modifyImage(image);
-                System.out.println("Finish modifying");
+                timeElapsed = (System.nanoTime() - start) / 1000000;
+                MyLogger.log(this.getClass().getName(), "Time elapsed: " + timeElapsed);
             }
         }
     }
@@ -62,7 +65,6 @@ public abstract class AugmentationMethod implements Cloneable, Serializable, Run
             for(Thread t_thread: threads){
                 try {
                     t_thread.join();
-                    System.out.println("Killed");
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -77,7 +79,6 @@ public abstract class AugmentationMethod implements Cloneable, Serializable, Run
         for(Thread t_thread: threads){
             try {
                 t_thread.join();
-                System.out.println("Killed");
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -94,7 +95,7 @@ public abstract class AugmentationMethod implements Cloneable, Serializable, Run
 //            e.printStackTrace();
 //        }
 
-        System.out.println(this.toString() + "Writing... [" + this.storage.size() + "]");
+//        System.out.println(this.toString() + "Writing... [" + this.storage.size() + "]");
         this.storage.add(bufferedImage);
     }
 }
