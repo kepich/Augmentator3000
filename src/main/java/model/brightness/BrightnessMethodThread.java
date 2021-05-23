@@ -7,11 +7,9 @@ import java.util.Vector;
 
 public abstract class BrightnessMethodThread extends MethodThread {
     protected final double brightness;
-    protected BufferedImage image;
 
     public BrightnessMethodThread(double brightness, BufferedImage image, Vector<BufferedImage> storage) {
-        super(storage);
+        super(storage, image);
         this.brightness = brightness;
-        this.image = image;
     }
 }

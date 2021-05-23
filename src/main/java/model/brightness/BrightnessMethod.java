@@ -25,7 +25,7 @@ public class BrightnessMethod extends AugmentationMethod {
 
     @Override
     protected void modifyImage(BufferedImage image) {
-        for (float brightness = brightnessFrom; brightness < brightnessTo; brightness += brightnessStep) {
+        for (float brightness = brightnessFrom; brightness <= brightnessTo; brightness += brightnessStep) {
             Thread thread = new Thread(AugmentationMethodFactory.createBrightnessMethodThread(brightness, image, storage));
             thread.start();
             threads.add(thread);
@@ -46,6 +46,6 @@ public class BrightnessMethod extends AugmentationMethod {
 
     @Override
     public int getEstimatedTime() {
-        return (int) ((brightnessTo - brightnessFrom) / brightnessStep);
+        return (int) ((brightnessTo - brightnessFrom) / brightnessStep + 1);
     }
 }

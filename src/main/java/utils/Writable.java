@@ -11,7 +11,6 @@ public abstract class Writable {
     }
 
     synchronized protected void writeFile(BufferedImage bufferedImage){
-        System.out.println(this.toString() + "Writing... [" + this.storage.size() + "]");
         this.storage.add(bufferedImage);
     }
 }

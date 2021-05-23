@@ -4,10 +4,16 @@ import acceptForm.AcceptForm;
 import methodBank.MethodBankFrame;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 public class MenuPanel extends JPanel implements ActionListener {
     private JButton generate;
+    private JButton results;
     private JFileChooser fileChooser;
 
     public MenuPanel(int x, int y, int width, int height) {
@@ -30,12 +36,12 @@ public class MenuPanel extends JPanel implements ActionListener {
         });
         this.add(methodBank);
 
-        this.generate = new JButton("Generate");
+        generate = new JButton("Generate");
         generate.setBounds((int) (this.getWidth() * 0.025), 70, (int) (this.getWidth() * 0.9), 50);
         generate.setEnabled(false);
 
         generate.addActionListener(e -> {
-            AcceptForm acceptForm = new AcceptForm(fileChooser);
+            AcceptForm acceptForm = new AcceptForm(fileChooser, results);
 
             acceptForm.acceptButton.addActionListener(a -> {
                 acceptForm.dispose();
@@ -57,8 +63,18 @@ public class MenuPanel extends JPanel implements ActionListener {
 
         this.add(generate);
 
-        JButton results = new JButton("Results");
+        results = new JButton("Results");
         results.setBounds((int) (this.getWidth() * 0.025), 130, (int) (this.getWidth() * 0.9), 50);
+        results.setEnabled(false);
+
+        results.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().open(fileChooser.getSelectedFile());
+            } catch (IOException ioException) {
+                System.out.println("File Not Found");
+            }
+        });
+
         this.add(results);
 
         JButton analyse = new JButton("Analyse");
@@ -70,7 +86,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("UpdateDir")) {
             fileChooser = (JFileChooser) e.getSource();
-            generate.setEnabled(true);
+            this.generate.setEnabled(true);
             //rebuild(fileChooser.getSelectedFile().getPath());
         }
     }

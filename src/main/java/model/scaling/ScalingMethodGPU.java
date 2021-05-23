@@ -5,7 +5,6 @@ import com.aparapi.Range;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.util.Vector;
 
 public class ScalingMethodGPU extends ScalingMethodThread {
@@ -16,16 +15,16 @@ public class ScalingMethodGPU extends ScalingMethodThread {
     @Override
     public void run() {
         double xMul = Math.exp(xScale);
-        double yMul = Math.exp(xScale);
+        double yMul = Math.exp(yScale);
 
         int resultWidth = (int) (image.getWidth() * xMul);
         int resultHeight = (int) (image.getHeight() * yMul);
 
-        int oldWidth = image.getWidth();
-        BufferedImage resultImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_RGB);
+        BufferedImage resultImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_3BYTE_BGR);
 
+        int oldWidth = image.getWidth();
         byte[] dataSourceImage = ((DataBufferByte)(image.getRaster().getDataBuffer())).getData();
-        int[] dataResultImage = ((DataBufferInt)(resultImage.getRaster().getDataBuffer())).getData();
+        byte[] dataResultImage = ((DataBufferByte)(resultImage.getRaster().getDataBuffer())).getData();
 
         Kernel kernel = new Kernel() {
             @Override
@@ -38,14 +37,16 @@ public class ScalingMethodGPU extends ScalingMethodThread {
                 int sourceRow = (int) (resultRow / yMul);
                 int sourceCol = (int) (resultCol / xMul);
 
-                dataResultImage[resultRow * resultWidth + resultCol] =
-                        dataSourceImage[(sourceRow * oldWidth + sourceCol) * 3] +
-                                (dataSourceImage[(sourceRow * oldWidth + sourceCol) * 3 + 1] << 8) +
-                                (dataSourceImage[(sourceRow * oldWidth + sourceCol) * 3 + 2] << 16);
+                int tempSourceCell = (sourceRow * oldWidth + sourceCol) * 3;
+                int tempResultCell = (resultRow * resultWidth + resultCol) * 3;
+
+                dataResultImage[tempResultCell] = dataSourceImage[tempSourceCell];
+                dataResultImage[tempResultCell + 1] = dataSourceImage[tempSourceCell + 1];
+                dataResultImage[tempResultCell + 2] = dataSourceImage[tempSourceCell + 2];
             }
         };
 
-        Range range = Range.create(dataResultImage.length);
+        Range range = Range.create(resultWidth * resultHeight);
         kernel.execute(range);
         kernel.dispose();
 

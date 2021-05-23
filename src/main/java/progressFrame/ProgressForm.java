@@ -2,6 +2,7 @@ package progressFrame;
 
 import augmentator.Augmentator;
 import model.AugmentationMethod;
+import model.AugmentationMethodComposite;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -11,12 +12,13 @@ public class ProgressForm extends JDialog {
     private final int WIDTH = 360;
     private final int HEIGHT = 160;
     public final Augmentator augmentator;
+    private final JButton results;
 
     public volatile JProgressBar progressBar;
     public JButton acceptButton;
     public JButton cancelButton;
 
-    public ProgressForm(JFileChooser fileChooser, AugmentationMethod selectedItem) {
+    public ProgressForm(JFileChooser fileChooser, AugmentationMethodComposite selectedItem, JButton results) {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setTitle("0%");
         this.setModal(true);
@@ -26,6 +28,7 @@ public class ProgressForm extends JDialog {
 
         initComponents();
         augmentator = new Augmentator(fileChooser, selectedItem, this);
+        this.results = results;
         Thread t = new Thread(augmentator::run);
         ProgressForm p = this;
 
@@ -52,6 +55,7 @@ public class ProgressForm extends JDialog {
         acceptButton.setEnabled(false);
         acceptButton.addActionListener(e -> {
             this.dispose();
+            this.results.setEnabled(true);
         });
         this.add(acceptButton);
 

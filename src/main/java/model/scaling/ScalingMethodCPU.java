@@ -13,7 +13,7 @@ public class ScalingMethodCPU extends ScalingMethodThread {
     @Override
     public void run() {
         double xMul = Math.exp(xScale);
-        double yMul = Math.exp(xScale);
+        double yMul = Math.exp(yScale);
 
         int resultWidth = (int) (image.getWidth() * xMul);
         int resultHeight = (int) (image.getHeight() * yMul);
@@ -26,6 +26,7 @@ public class ScalingMethodCPU extends ScalingMethodThread {
                 resultImage.setRGB(col, row, image.getRGB((int) (col / xMul), sourceRow));
             }
         }
+
         writeFile(resultImage);
     }
 }

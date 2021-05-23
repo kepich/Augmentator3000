@@ -2,6 +2,7 @@ package acceptForm;
 
 import mainForm.MainFrame;
 import model.AugmentationMethod;
+import model.AugmentationMethodComposite;
 import progressFrame.ProgressForm;
 
 import javax.swing.*;
@@ -10,16 +11,19 @@ public class AcceptForm extends JDialog {
     private final int WIDTH = 360;
     private final int HEIGHT = 160;
     private final JFileChooser fileChooser;
+    private final JButton results;
 
     public JComboBox<AugmentationMethod> nameField;
     public JButton acceptButton;
     public JButton cancelButton;
     public ProgressForm progressForm;
 
-    public AcceptForm(JFileChooser fileChooser) {
+    public AcceptForm(JFileChooser fileChooser, JButton results) {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.fileChooser = fileChooser;
+        this.results = results;
+
         this.setTitle("Choose method");
         this.setModal(true);
         this.setBounds(0, 0, WIDTH, HEIGHT);
@@ -44,7 +48,7 @@ public class AcceptForm extends JDialog {
             acceptButton.setEnabled(false);
         }
         acceptButton.addActionListener(e -> {
-            progressForm = new ProgressForm(fileChooser, (AugmentationMethod)nameField.getSelectedItem());
+            progressForm = new ProgressForm(fileChooser, (AugmentationMethodComposite)nameField.getSelectedItem(), results);
             this.dispose();
             progressForm.setVisible(true);
         });

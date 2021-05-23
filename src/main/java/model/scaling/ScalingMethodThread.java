@@ -8,12 +8,10 @@ import java.util.Vector;
 public abstract class ScalingMethodThread extends MethodThread {
     protected double xScale;
     protected double yScale;
-    protected BufferedImage image;
 
     public ScalingMethodThread(double xScale, double yScale, BufferedImage image, Vector<BufferedImage> storage) {
-        super(storage);
+        super(storage, image);
         this.xScale = xScale;
         this.yScale = yScale;
-        this.image = image;
     }
 }

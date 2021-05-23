@@ -70,6 +70,6 @@ public class ScalingMethod extends AugmentationMethod {
             return (int) ((xScaleTo - xScaleFrom) / xScaleStep);
         }
 
-        return (int) ((xScaleTo - xScaleFrom) / xScaleStep * (yScaleTo - yScaleFrom) / yScaleStep);
+        return (int) (((xScaleTo - xScaleFrom) / xScaleStep + 1) * ((yScaleTo - yScaleFrom) / yScaleStep + 1));
     }
 }

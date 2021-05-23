@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
     private final int WIDTH = 1280;
     private final int HEIGHT = 720;
 
-    public static final int AMOUNT_OF_THREADS = 2;
+    public static final int AMOUNT_OF_THREADS = 1;
 
     private final int leftVertHeight = 70;
     private final int leftWidth = 280;

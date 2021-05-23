@@ -16,6 +16,7 @@ public class BrightnessMethodCPU extends BrightnessMethodThread {
         int fin_brightness = (int) brightness;
 
         BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
         int red, green, blue, rgb;
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -23,7 +24,7 @@ public class BrightnessMethodCPU extends BrightnessMethodThread {
                 green = (image.getRGB(col, row) >> 8) & 0xFF;
                 blue = image.getRGB(col, row) & 0xFF;
                 rgb = boardAdd(red, fin_brightness);
-                rgb = (rgb << 8) + boardAdd(green,  fin_brightness);
+                rgb = (rgb << 8) + boardAdd(green, fin_brightness);
                 rgb = (rgb << 8) + boardAdd(blue, fin_brightness);
                 resultImage.setRGB(col, row, rgb);
             }

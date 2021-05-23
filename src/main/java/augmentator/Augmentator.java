@@ -2,6 +2,7 @@ package augmentator;
 
 import mainForm.FileList;
 import model.AugmentationMethod;
+import model.AugmentationMethodComposite;
 import progressFrame.ProgressForm;
 
 import javax.imageio.ImageIO;
@@ -17,13 +18,13 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 public class Augmentator {
-    private final AugmentationMethod selectedMethod;
+    private final AugmentationMethodComposite selectedMethod;
     private ProgressForm progressForm;
     private JFileChooser fileChooser;
 
     public static Path path;
 
-    public Augmentator(JFileChooser fileChooser, AugmentationMethod selectedItem, ProgressForm progressForm) {
+    public Augmentator(JFileChooser fileChooser, AugmentationMethodComposite selectedItem, ProgressForm progressForm) {
         this.fileChooser = fileChooser;
         this.selectedMethod = selectedItem;
         this.progressForm = progressForm;
@@ -54,10 +55,9 @@ public class Augmentator {
 
         File out;
 
-
         int tempNumber = 0;
         int estimatedTime = this.selectedMethod.getEstimatedTime() * files.length;
-
+        long nanoStart = System.nanoTime();
 
         while(tempNumber < estimatedTime){
             if (this.selectedMethod.storage.size() > tempNumber){
@@ -65,13 +65,8 @@ public class Augmentator {
                 this.selectedMethod.storage.set(tempNumber, null);
 
                 out = new File(path + "\\" + this.selectedMethod.name + "_" + tempNumber + ".jpg");
-
-                try {
-                    ImageIO.write(image, "jpg", out);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                writeImage(out, image);
+                System.out.println(" Writing... [" + tempNumber + " of " + (this.selectedMethod.storage.size() - 1) + " ]");
                 this.progressForm.updateProgressBar((int)(((float)tempNumber++ / estimatedTime) * 100));
             }
         }
@@ -82,7 +77,17 @@ public class Augmentator {
             e.printStackTrace();
         }
 
+        long nanoEnd = System.nanoTime();
+        System.out.println(nanoEnd);
         this.progressForm.updateProgressBar(100);
         this.progressForm.acceptButton.setEnabled(true);
+    }
+
+    private void writeImage(File out, BufferedImage image) {
+        try {
+            ImageIO.write(image, "jpg", out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
