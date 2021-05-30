@@ -1,8 +1,9 @@
 package model.scaling;
 
 import model.AugmentationMethod;
-import model.AugmentationMethodFactory;
 import model.AugmentationMethodType;
+import utils.MyLogger;
+import utils.ThreadPool;
 
 import java.awt.image.BufferedImage;
 
@@ -33,11 +34,7 @@ public class ScalingMethod extends AugmentationMethod {
     protected void modifyImage(BufferedImage image){
         for (float xScale = xScaleFrom; xScale <= xScaleTo; xScale += xScaleStep) {
             for (float yScale = yScaleFrom; yScale <= yScaleTo; yScale += yScaleStep) {
-                Thread thread = new Thread(AugmentationMethodFactory.createScalingMethodThread(xScale, yScale, image, storage));
-                thread.start();
-                threads.add(thread);
-
-                waitAllThreads();
+                ThreadPool.runTask(new ScalingMethodCPU(xScale, yScale, image, storageResult), priority);
 
                 if(yScaleFrom == yScaleTo){
                     break;
@@ -47,7 +44,6 @@ public class ScalingMethod extends AugmentationMethod {
                 break;
             }
         }
-        joinAllThreads();
     }
 
     @Override

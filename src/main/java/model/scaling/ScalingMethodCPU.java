@@ -1,8 +1,14 @@
 package model.scaling;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 import java.awt.image.BufferedImage;
 import java.util.Vector;
+
+import static utils.ImageUtils.bufferedImage2Mat;
+import static utils.ImageUtils.mat2BufferedImage;
 
 public class ScalingMethodCPU extends ScalingMethodThread {
 
@@ -18,14 +24,9 @@ public class ScalingMethodCPU extends ScalingMethodThread {
         int resultWidth = (int) (image.getWidth() * xMul);
         int resultHeight = (int) (image.getHeight() * yMul);
 
-        BufferedImage resultImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_RGB);
-
-        for (int row = 0; row < resultHeight; row++) {
-            int sourceRow = (int) (row / yMul);
-            for (int col = 0; col < resultWidth; col++) {
-                resultImage.setRGB(col, row, image.getRGB((int) (col / xMul), sourceRow));
-            }
-        }
+        Mat imageMat = bufferedImage2Mat(image);
+        Imgproc.resize(imageMat, imageMat, new Size(resultWidth, resultHeight));
+        BufferedImage resultImage = mat2BufferedImage(imageMat);
 
         writeFile(resultImage);
     }

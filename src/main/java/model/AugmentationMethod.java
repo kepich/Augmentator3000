@@ -4,20 +4,19 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.Vector;
 
-import static mainForm.MainFrame.AMOUNT_OF_THREADS;
-
 public abstract class AugmentationMethod implements Cloneable, Serializable, Runnable {
     public final AugmentationMethodType type;
     public final String name;
 
-    volatile protected Vector<Thread> threads = new Vector<>();
-    public volatile Vector<BufferedImage> storage = new Vector<>();
+    public volatile Vector<BufferedImage> storageResult = new Vector<>();
     protected volatile Vector<BufferedImage> storageInput;
     protected volatile int maxInputSize;
+    protected int priority;
 
-    public void setStorageInputAndMaxSize(Vector<BufferedImage> storageInput, int maxInputSize){
+    public void setStorageInputAndMaxSizeAndPriority(Vector<BufferedImage> storageInput, int maxInputSize, int priority) {
         this.storageInput = storageInput;
         this.maxInputSize = maxInputSize;
+        this.priority = priority;
     }
 
     protected AugmentationMethod(AugmentationMethodType type, String name) {
@@ -29,8 +28,8 @@ public abstract class AugmentationMethod implements Cloneable, Serializable, Run
     public void run() {
         int tempNumber = 0;
 
-        while(tempNumber < maxInputSize){
-            if (storageInput.size() > tempNumber){
+        while (tempNumber < maxInputSize) {
+            if (storageInput.size() > tempNumber) {
                 BufferedImage image = storageInput.get(tempNumber);
                 storageInput.set(tempNumber++, null);
                 modifyImage(image);
@@ -40,35 +39,10 @@ public abstract class AugmentationMethod implements Cloneable, Serializable, Run
 
     @Override
     public abstract String toString();
+
     public abstract AugmentationMethod clone();
 
     protected abstract void modifyImage(BufferedImage image);
 
     public abstract int getEstimatedTime();
-
-    protected void waitAllThreads(){
-        if(threads.size() > AMOUNT_OF_THREADS){
-            for(Thread t_thread: threads){
-                try {
-                    t_thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            threads.clear();
-        }
-    }
-
-    protected void joinAllThreads(){
-        for(Thread t_thread: threads){
-            try {
-                t_thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        threads.clear();
-    }
 }

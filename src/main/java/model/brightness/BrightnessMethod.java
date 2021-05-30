@@ -1,8 +1,8 @@
 package model.brightness;
 
 import model.AugmentationMethod;
-import model.AugmentationMethodFactory;
 import model.AugmentationMethodType;
+import utils.ThreadPool;
 
 import java.awt.image.BufferedImage;
 
@@ -26,12 +26,8 @@ public class BrightnessMethod extends AugmentationMethod {
     @Override
     protected void modifyImage(BufferedImage image) {
         for (float brightness = brightnessFrom; brightness <= brightnessTo; brightness += brightnessStep) {
-            Thread thread = new Thread(AugmentationMethodFactory.createBrightnessMethodThread(brightness, image, storage));
-            thread.start();
-            threads.add(thread);
-            waitAllThreads();
+            ThreadPool.runTask(new BrightnessMethodCPU(brightness, image, storageResult), priority);
         }
-        joinAllThreads();
     }
 
     @Override
