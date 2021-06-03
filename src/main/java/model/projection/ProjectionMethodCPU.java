@@ -23,24 +23,24 @@ public class ProjectionMethodCPU extends ProjectionMethodThread {
     public void run() {
         Mat imageMat = bufferedImage2Mat(image);
 
-        Mat srcTri = new Mat(4, 1, CvType.CV_32FC2);
+        Mat srcTri = new Mat(4, 2, CvType.CV_32FC1);
         srcTri.put(0,
                 0,
                 new float[]{
                         0, 0,
                         image.getWidth(), 0,
-                        image.getWidth(), image.getHeight(),
-                        0, image.getHeight()
+                        0, image.getHeight(),
+                        image.getWidth(), image.getHeight()
         });
 
-        Mat dstTri = new Mat(4, 1, CvType.CV_32FC2);
+        Mat dstTri = new Mat(4, 2, CvType.CV_32FC1);
         dstTri.put(0,
                 0,
                 new float[]{
                         this.lu[0], this.lu[1],
                         this.ru[0], this.ru[1],
-                        this.rd[0], this.rd[1],
-                        this.ld[0], this.ld[1]}
+                        this.ld[0], this.ld[1],
+                        this.rd[0], this.rd[1]}
         );
 
         Mat M = Imgproc.getPerspectiveTransform(srcTri, dstTri);

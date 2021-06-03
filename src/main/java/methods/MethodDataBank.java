@@ -2,6 +2,7 @@ package methods;
 
 import model.AugmentationMethod;
 import model.brightness.BrightnessMethod;
+import model.gamma.GammaMethod;
 import model.projection.ProjectionMethod;
 import model.scaling.ScalingMethod;
 import utils.MyLogger;
@@ -19,6 +20,7 @@ public abstract class MethodDataBank {
         simpleMethods.add(new ScalingMethod());
         simpleMethods.add(new BrightnessMethod());
         simpleMethods.add(new ProjectionMethod());
+        simpleMethods.add(new GammaMethod());
     }
 
     public static void loadData(){

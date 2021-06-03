@@ -1,9 +1,6 @@
 package UI.methodBankForm;
 
-import UI.methodBankForm.customizer.BrightnessCustomizerImpl;
-import UI.methodBankForm.customizer.Customizer;
-import UI.methodBankForm.customizer.ScalingCustomizerImpl;
-import UI.methodBankForm.customizer.ProjectionCustomizerImpl;
+import UI.methodBankForm.customizer.*;
 import methods.MethodDataBank;
 import model.AugmentationMethod;
 
@@ -13,6 +10,7 @@ public class MethodCustomizationPanel extends JPanel {
     private ScalingCustomizerImpl scalingCustomizerImpl;
     private BrightnessCustomizerImpl brightnessCustomizerImpl;
     private ProjectionCustomizerImpl projectionCustomizerImpl;
+    private GammaCustomizerImpl gammaCustomizerImpl;
 
     private Customizer activePanel;
     private JButton saveButton = new JButton("Save");
@@ -52,6 +50,15 @@ public class MethodCustomizationPanel extends JPanel {
         projectionCustomizerImpl.setVisible(false);
         this.add(projectionCustomizerImpl);
 
+        gammaCustomizerImpl = new GammaCustomizerImpl(
+                (int)(this.getWidth() * 0.05),
+                (int)(this.getHeight() * 0.05),
+                (int) (this.getWidth() * 0.90),
+                500
+        );
+        gammaCustomizerImpl.setVisible(false);
+        this.add(gammaCustomizerImpl);
+
         int buttonHeight = 30;
         int buttonWidth = 120;
 
@@ -90,6 +97,12 @@ public class MethodCustomizationPanel extends JPanel {
                 projectionCustomizerImpl.setVisible(true);
                 activePanel = projectionCustomizerImpl;
                 projectionCustomizerImpl.loadData(augmentationMethod);
+            }
+            case GAMMA -> {
+                this.setVisible(true);
+                gammaCustomizerImpl.setVisible(true);
+                activePanel = gammaCustomizerImpl;
+                gammaCustomizerImpl.loadData(augmentationMethod);
             }
         }
     }
