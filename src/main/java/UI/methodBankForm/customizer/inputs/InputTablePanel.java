@@ -13,7 +13,7 @@ public class InputTablePanel extends JPanel {
     private JLabel toLabel;
     private JLabel stepLabel;
 
-    public InputTablePanel(int x, int y, String description){
+    public InputTablePanel(int x, int y, String description) {
         this.setLayout(null);
 
         this.setBounds(x, y, 500, 300);
@@ -96,18 +96,18 @@ public class InputTablePanel extends JPanel {
         return getData(inputStep);
     }
 
-    private void setData(double[][] matrix, JTable table){
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
+    private void setData(double[][] matrix, JTable table) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 table.setValueAt(String.valueOf(matrix[i][j]), i, j);
             }
         }
     }
 
-    private double[][] getData(JTable table){
+    private double[][] getData(JTable table) {
         double[][] matrix = new double[3][3];
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 matrix[i][j] = Double.parseDouble((String) table.getValueAt(i, j));
             }
         }

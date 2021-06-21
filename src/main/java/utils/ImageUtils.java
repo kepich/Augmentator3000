@@ -14,7 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public abstract class ImageUtils {
-    public static ImageIcon getResizedImageIcon(BufferedImage bufferedImage, int resultWidth, int resultHeight){
+    public static ImageIcon getResizedImageIcon(BufferedImage bufferedImage, int resultWidth, int resultHeight) {
         float multiplier = (float) resultWidth / (float) bufferedImage.getWidth();
 
         if (multiplier * bufferedImage.getHeight() > resultHeight) {

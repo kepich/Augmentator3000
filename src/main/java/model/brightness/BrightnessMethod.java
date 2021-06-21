@@ -1,47 +1,23 @@
 package model.brightness;
 
-import model.AugmentationMethod;
-import model.AugmentationMethodType;
-import utils.ThreadPool;
+import model.MethodThread;
+import org.opencv.core.Mat;
+import utils.ImageUtils;
 
 import java.awt.image.BufferedImage;
+import java.util.Vector;
 
-public class BrightnessMethod extends AugmentationMethod {
-    public float brightnessFrom;
-    public float brightnessTo;
-    public float brightnessStep;
+public class BrightnessMethod extends MethodThread {
+    private final double brightness;
 
-    public BrightnessMethod() {
-        super(AugmentationMethodType.BRIGHTNESS, "Brightness");
+    public BrightnessMethod(double brightness, BufferedImage image, Vector<BufferedImage> storage) {
+        super(storage, image);
+        this.brightness = brightness;
     }
 
-    public BrightnessMethod(float brightnessFrom, float brightnessTo, float brightnessStep) {
-        super(AugmentationMethodType.BRIGHTNESS, "Brightness");
-
-        this.brightnessFrom = brightnessFrom;
-        this.brightnessTo = brightnessTo;
-        this.brightnessStep = brightnessStep;
-    }
-
-    @Override
-    protected void modifyImage(BufferedImage image) {
-        for (float brightness = brightnessFrom; brightness <= brightnessTo; brightness += brightnessStep) {
-            ThreadPool.runTask(new BrightnessMethodCPU(brightness, image, storageResult), priority);
-        }
-    }
-
-    @Override
-    public String toString() {
-        return name + "[" + brightnessFrom + ", " + brightnessTo + "](" + brightnessStep + ")";
-    }
-
-    @Override
-    public AugmentationMethod clone() {
-        return new BrightnessMethod(brightnessFrom, brightnessTo, brightnessStep);
-    }
-
-    @Override
-    public int getEstimatedTime() {
-        return (int) ((brightnessTo - brightnessFrom) / brightnessStep + 1);
+    protected BufferedImage modify() {
+        Mat image = ImageUtils.bufferedImage2Mat(this.image);
+        image.convertTo(image, -1, 1, (int) brightness);
+        return ImageUtils.mat2BufferedImage(image);
     }
 }

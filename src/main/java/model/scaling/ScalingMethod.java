@@ -1,71 +1,36 @@
 package model.scaling;
 
-import model.AugmentationMethod;
-import model.AugmentationMethodType;
-import utils.MyLogger;
-import utils.ThreadPool;
+import model.MethodThread;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 import java.awt.image.BufferedImage;
+import java.util.Vector;
 
-public class ScalingMethod extends AugmentationMethod {
-    public float xScaleFrom;
-    public float xScaleTo;
-    public float xScaleStep;
-    public float yScaleFrom;
-    public float yScaleTo;
-    public float yScaleStep;
+import static utils.ImageUtils.bufferedImage2Mat;
+import static utils.ImageUtils.mat2BufferedImage;
 
-    public ScalingMethod() {
-        super(AugmentationMethodType.SCALING, "Scaling");
+public class ScalingMethod extends MethodThread {
+    private final double xScale;
+    private final double yScale;
+
+    public ScalingMethod(double xScale, double yScale, BufferedImage image, Vector<BufferedImage> storage) {
+        super(storage, image);
+        this.xScale = xScale;
+        this.yScale = yScale;
     }
 
-    public ScalingMethod(float xScaleFrom, float xScaleTo, float xScaleStep, float yScaleFrom, float yScaleTo, float yScaleStep) {
-        super(AugmentationMethodType.SCALING, "Scaling");
+    protected BufferedImage modify() {
+        double xMul = Math.exp(xScale);
+        double yMul = Math.exp(yScale);
 
-        this.xScaleFrom = xScaleFrom;
-        this.xScaleTo = xScaleTo;
-        this.xScaleStep = xScaleStep;
-        this.yScaleFrom = yScaleFrom;
-        this.yScaleTo = yScaleTo;
-        this.yScaleStep = yScaleStep;
-    }
+        int resultWidth = (int) (image.getWidth() * xMul);
+        int resultHeight = (int) (image.getHeight() * yMul);
 
-    @Override
-    protected void modifyImage(BufferedImage image){
-        for (float xScale = xScaleFrom; xScale <= xScaleTo; xScale += xScaleStep) {
-            for (float yScale = yScaleFrom; yScale <= yScaleTo; yScale += yScaleStep) {
-                ThreadPool.runTask(new ScalingMethodCPU(xScale, yScale, image, storageResult), priority);
-
-                if(yScaleFrom == yScaleTo){
-                    break;
-                }
-            }
-            if(xScaleFrom == xScaleTo){
-                break;
-            }
-        }
-    }
-
-    @Override
-    public String toString() {
-        return name + "[" + xScaleFrom + ", " + yScaleTo + "](" + xScaleStep + "), [" + yScaleFrom + ", " + yScaleTo + "](" + yScaleStep + ")";
-    }
-
-    @Override
-    public AugmentationMethod clone() {
-        return new ScalingMethod(xScaleFrom, xScaleTo, xScaleStep, yScaleFrom, yScaleTo, yScaleStep);
-    }
-
-    @Override
-    public int getEstimatedTime() {
-        if(xScaleTo - xScaleFrom == 0) {
-            return (int) ((yScaleTo - yScaleFrom) / yScaleStep);
-        }
-
-        if(yScaleTo - yScaleFrom == 0) {
-            return (int) ((xScaleTo - xScaleFrom) / xScaleStep);
-        }
-
-        return (int) (((xScaleTo - xScaleFrom) / xScaleStep + 1) * ((yScaleTo - yScaleFrom) / yScaleStep + 1));
+        Mat imageMat = bufferedImage2Mat(image);
+        Imgproc.resize(imageMat, imageMat, new Size(resultWidth, resultHeight));
+        BufferedImage resultImage = mat2BufferedImage(imageMat);
+        return resultImage;
     }
 }

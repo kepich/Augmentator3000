@@ -23,7 +23,7 @@ public class GalleryPanel extends JPanel {
         fileList.rebuild();
     }
 
-    public JList<File> getFileList(){
+    public JList<File> getFileList() {
         return fileList.fileList;
     }
 }

@@ -1,14 +1,14 @@
-package utils;
+package model;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ThreadPool {
-    private static final int AMOUNT_OF_THREADS = 1;
-    private static ConcurrentHashMap<Integer, ExecutorService> executors = new ConcurrentHashMap<>();
+    private static final int AMOUNT_OF_THREADS = 2;
+    private static final ConcurrentHashMap<Integer, ExecutorService> executors = new ConcurrentHashMap<>();
 
-    public synchronized static void runTask(Runnable runnable, int priority) {
+    public static synchronized void runTask(Runnable runnable, int priority) {
         if (!executors.containsKey(priority)) {
             executors.put(priority, Executors.newWorkStealingPool(AMOUNT_OF_THREADS));
         }
@@ -22,11 +22,11 @@ public class ThreadPool {
         }
     }
 
-    public synchronized static void runTask(Runnable runnable) {
+    public static synchronized void runTask(Runnable runnable) {
         runTask(runnable, -1);
     }
 
-    public synchronized static void shutdownNow(){
+    public static synchronized void shutdownNow() {
         executors.values().forEach(ExecutorService::shutdownNow);
         executors.clear();
     }

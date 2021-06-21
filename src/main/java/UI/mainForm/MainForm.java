@@ -45,7 +45,7 @@ public class MainForm extends JFrame {
     private void initComponents() {
         var contentPane = getContentPane();
 
-        openPanel.setBackground(new Color(0x488c4d));
+        //openPanel.setBackground(new Color(0x488c4d));
         openPanel.addOpenButtonActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,7 +67,7 @@ public class MainForm extends JFrame {
         });
         contentPane.add(openPanel);
 
-        processingGalleryPanel.setBackground(new Color(0x8C8548));
+        //processingGalleryPanel.setBackground(new Color(0x8C8548));
         processingGalleryPanel.getFileList().addListSelectionListener(e -> {
             MyLogger.log(viewerPanel.getClass().getName(), e.toString());
 
@@ -81,10 +81,10 @@ public class MainForm extends JFrame {
         });
         contentPane.add(processingGalleryPanel);
 
-        viewerPanel.setBackground(new Color(0x4A488C));
+        //viewerPanel.setBackground(new Color(0x4A488C));
         contentPane.add(viewerPanel);
 
-        menuPanel.setBackground(new Color(0x87488C));
+        //menuPanel.setBackground(new Color(0x87488C));
         contentPane.add(menuPanel);
     }
 

@@ -1,4 +1,6 @@
-package utils;
+package model;
+
+import utils.Writable;
 
 import java.awt.image.BufferedImage;
 import java.util.Vector;
@@ -10,4 +12,11 @@ public abstract class MethodThread extends Writable implements Runnable {
         super(storage);
         this.image = image;
     }
+
+    @Override
+    public void run() {
+        writeFile(modify());
+    }
+
+    protected abstract BufferedImage modify();
 }

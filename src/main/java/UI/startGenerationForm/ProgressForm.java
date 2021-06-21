@@ -2,7 +2,7 @@ package UI.startGenerationForm;
 
 import augmentator.Augmentator;
 import model.AugmentationMethodComposite;
-import utils.ThreadPool;
+import model.ThreadPool;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -43,7 +43,7 @@ public class ProgressForm extends JDialog {
         t.start();
     }
 
-    public void addFinishButtonActionListener(ActionListener actionListener){
+    public void addFinishButtonActionListener(ActionListener actionListener) {
         acceptButton.addActionListener(actionListener);
     }
 
@@ -64,12 +64,12 @@ public class ProgressForm extends JDialog {
         this.add(cancelButton);
     }
 
-    synchronized public void updateProgressBar(int percent){
+    synchronized public void updateProgressBar(int percent) {
         SwingUtilities.invokeLater(() -> {
             this.progressBar.setValue(percent);
             this.setTitle(percent + "%");
 
-            if (percent == 100){
+            if (percent == 100) {
                 this.acceptButton.setEnabled(true);
             }
 

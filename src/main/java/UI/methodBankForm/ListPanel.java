@@ -12,8 +12,8 @@ public class ListPanel extends JPanel {
     private JButton delete;
     private JButton add;
 
-    private int buttonWidth = 60;
-    private int buttonHeight = 20;
+    private final int buttonWidth = 60;
+    private final int buttonHeight = 20;
 
     public ListPanel(int x, int y, int width, int height, Vector<AugmentationMethod> data) {
         this.setBounds(x, y, width, height);
@@ -22,11 +22,11 @@ public class ListPanel extends JPanel {
         initComponents(data);
     }
 
-    public void addListSelectionListener(ListSelectionListener listSelectionListener){
+    public void addListSelectionListener(ListSelectionListener listSelectionListener) {
         list.addListSelectionListener(listSelectionListener);
     }
 
-    public AugmentationMethod getSelectedValue(){
+    public AugmentationMethod getSelectedValue() {
         return list.methods.getSelectedValue();
     }
 
@@ -44,11 +44,11 @@ public class ListPanel extends JPanel {
         this.add(add);
     }
 
-    public void addAddListener(ActionListener actionListener){
+    public void addAddListener(ActionListener actionListener) {
         this.add.addActionListener(actionListener);
     }
 
-    public void addDeleteListener(ActionListener actionListener){
+    public void addDeleteListener(ActionListener actionListener) {
         this.delete.addActionListener(actionListener);
     }
 }

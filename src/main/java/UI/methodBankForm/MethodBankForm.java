@@ -41,7 +41,7 @@ public class MethodBankForm extends JDialog {
         this.setBounds(0, 0, WIDTH, HEIGHT);
         this.setResizable(false);
         this.getContentPane().setLayout(null);
-        this.setBackground(new Color(0x488c4d));
+        //this.setBackground(new Color(0x488c4d));
 
         initComponents();
     }
@@ -72,7 +72,7 @@ public class MethodBankForm extends JDialog {
                 (int) (this.getWidth() * 0.4),
                 (int) (this.getHeight() * 0.85)
         );
-        methodCustomizationPanel.setBackground(new Color(0x8C4848));
+        //methodCustomizationPanel.setBackground(new Color(0x8C4848));
         methodCustomizationPanel.setVisible(false);
         contentPane.add(methodCustomizationPanel);
     }

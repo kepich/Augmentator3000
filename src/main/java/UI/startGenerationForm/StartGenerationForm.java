@@ -5,8 +5,6 @@ import model.AugmentationMethod;
 import model.AugmentationMethodComposite;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class StartGenerationForm extends JDialog {
     private final int WIDTH = 360;
@@ -36,18 +34,18 @@ public class StartGenerationForm extends JDialog {
     private void initComponents() {
         nameField = new JComboBox();
         nameField.setBounds(100, 30, 200, 20);
-        for(AugmentationMethod augmentationMethod: MethodDataBank.methods){
+        for (AugmentationMethod augmentationMethod : MethodDataBank.methods) {
             nameField.addItem(augmentationMethod);
         }
         this.add(nameField);
 
         acceptButton = new JButton("Start");
         acceptButton.setBounds(30, 70, 110, 20);
-        if(MethodDataBank.methods.isEmpty()){
+        if (MethodDataBank.methods.isEmpty()) {
             acceptButton.setEnabled(false);
         }
         acceptButton.addActionListener(e -> {
-            progressForm = new ProgressForm((AugmentationMethodComposite)nameField.getSelectedItem(), results);
+            progressForm = new ProgressForm((AugmentationMethodComposite) nameField.getSelectedItem(), results);
             progressForm.addFinishButtonActionListener(e1 -> progressForm.finish());
             this.dispose();
             progressForm.setVisible(true);

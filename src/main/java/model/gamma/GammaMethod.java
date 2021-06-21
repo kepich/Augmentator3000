@@ -1,47 +1,41 @@
 package model.gamma;
 
-import model.AugmentationMethod;
-import model.AugmentationMethodType;
-import utils.ThreadPool;
+import model.MethodThread;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import utils.ImageUtils;
 
 import java.awt.image.BufferedImage;
+import java.util.Vector;
 
-public class GammaMethod extends AugmentationMethod {
-    public float gammaFrom;
-    public float gammaTo;
-    public float gammaStep;
+public class GammaMethod extends MethodThread {
+    private final float gamma;
 
-    public GammaMethod() {
-        super(AugmentationMethodType.GAMMA, "Gamma");
+    public GammaMethod(float gamma, BufferedImage image, Vector<BufferedImage> storage) {
+        super(storage, image);
+        this.gamma = gamma;
     }
 
-    public GammaMethod(float gammaFrom, float gammaTo, float gammaStep) {
-        super(AugmentationMethodType.GAMMA, "Gamma");
-
-        this.gammaFrom = gammaFrom;
-        this.gammaTo = gammaTo;
-        this.gammaStep = gammaStep;
-    }
-
-    @Override
-    protected void modifyImage(BufferedImage image) {
-        for (float gamma = gammaFrom; gamma <= gammaTo; gamma += gammaStep) {
-            ThreadPool.runTask(new GammaMethodCPU(gamma, image, storageResult), priority);
+    protected BufferedImage modify() {
+        Mat image = ImageUtils.bufferedImage2Mat(this.image);
+        Mat lookUpTable = new Mat(1, 256, CvType.CV_8UC3);
+        byte[] lookUpTableData = new byte[(int) (lookUpTable.total() * lookUpTable.channels())];
+        for (int i = 0; i < lookUpTable.cols() / 3; i++) {
+            lookUpTableData[i] = saturate(Math.pow(i / 255.0, gamma) * 255.0);
+            lookUpTableData[i + 1] = saturate(Math.pow(i / 255.0, gamma) * 255.0);
+            lookUpTableData[i + 2] = saturate(Math.pow(i / 255.0, gamma) * 255.0);
         }
+        lookUpTable.put(0, 0, lookUpTableData);
+        Mat img = new Mat();
+        Core.LUT(image, lookUpTable, img);
+        return ImageUtils.mat2BufferedImage(img);
     }
 
-    @Override
-    public String toString() {
-        return name + "[" + gammaFrom + ", " + gammaTo + "](" + gammaStep + ")";
+    private byte saturate(double val) {
+        int iVal = (int) Math.round(val);
+        iVal = iVal > 255 ? 255 : Math.max(iVal, 0);
+        return (byte) iVal;
     }
 
-    @Override
-    public AugmentationMethod clone() {
-        return new GammaMethod(gammaFrom, gammaTo, gammaStep);
-    }
-
-    @Override
-    public int getEstimatedTime() {
-        return (int) ((gammaTo - gammaFrom) / gammaStep + 1);
-    }
 }

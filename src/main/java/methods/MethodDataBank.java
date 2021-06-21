@@ -1,10 +1,10 @@
 package methods;
 
 import model.AugmentationMethod;
-import model.brightness.BrightnessMethod;
-import model.gamma.GammaMethod;
-import model.projection.ProjectionMethod;
-import model.scaling.ScalingMethod;
+import model.brightness.BrightnessMethodIterator;
+import model.gamma.GammaMethodIterator;
+import model.projection.ProjectionMethodIterator;
+import model.scaling.ScalingMethodIterator;
 import utils.MyLogger;
 
 import java.io.*;
@@ -17,13 +17,13 @@ public abstract class MethodDataBank {
     static {
         loadData();
 
-        simpleMethods.add(new ScalingMethod());
-        simpleMethods.add(new BrightnessMethod());
-        simpleMethods.add(new ProjectionMethod());
-        simpleMethods.add(new GammaMethod());
+        simpleMethods.add(new ScalingMethodIterator());
+        simpleMethods.add(new BrightnessMethodIterator());
+        simpleMethods.add(new ProjectionMethodIterator());
+        simpleMethods.add(new GammaMethodIterator());
     }
 
-    public static void loadData(){
+    public static void loadData() {
         try {
             FileInputStream fin = new FileInputStream("methods.data");
             ObjectInputStream in = new ObjectInputStream(fin);
@@ -35,7 +35,7 @@ public abstract class MethodDataBank {
         }
     }
 
-    public static void saveData(){
+    public static void saveData() {
         try {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("methods.data"));
             out.writeObject(methods);

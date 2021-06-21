@@ -1,8 +1,8 @@
 package UI.methodBankForm.customizer;
 
-import model.AugmentationMethod;
-import model.scaling.ScalingMethod;
 import UI.methodBankForm.customizer.inputs.InputNumberPanel;
+import model.AugmentationMethod;
+import model.scaling.ScalingMethodIterator;
 
 import javax.swing.*;
 
@@ -10,7 +10,7 @@ public class ScalingCustomizerImpl extends JPanel implements Customizer {
     public InputNumberPanel xScalePanel;
     public InputNumberPanel yScalePanel;
 
-    public ScalingMethod scalingMethod;
+    public ScalingMethodIterator scalingMethodIterator;
 
     public ScalingCustomizerImpl(int x, int y, int width, int height) {
         this.setBounds(x, y, width, height);
@@ -29,25 +29,25 @@ public class ScalingCustomizerImpl extends JPanel implements Customizer {
 
     @Override
     public void loadData(AugmentationMethod method) {
-        scalingMethod = (ScalingMethod) method;
+        scalingMethodIterator = (ScalingMethodIterator) method;
 
-        xScalePanel.inputFrom.setText(String.valueOf(scalingMethod.xScaleFrom));
-        xScalePanel.inputTo.setText(String.valueOf(scalingMethod.xScaleTo));
-        xScalePanel.inputStep.setText(String.valueOf(scalingMethod.xScaleStep));
+        xScalePanel.inputFrom.setText(String.valueOf(scalingMethodIterator.xScaleFrom));
+        xScalePanel.inputTo.setText(String.valueOf(scalingMethodIterator.xScaleTo));
+        xScalePanel.inputStep.setText(String.valueOf(scalingMethodIterator.xScaleStep));
 
-        yScalePanel.inputFrom.setText(String.valueOf(scalingMethod.yScaleFrom));
-        yScalePanel.inputTo.setText(String.valueOf(scalingMethod.yScaleTo));
-        yScalePanel.inputStep.setText(String.valueOf(scalingMethod.yScaleStep));
+        yScalePanel.inputFrom.setText(String.valueOf(scalingMethodIterator.yScaleFrom));
+        yScalePanel.inputTo.setText(String.valueOf(scalingMethodIterator.yScaleTo));
+        yScalePanel.inputStep.setText(String.valueOf(scalingMethodIterator.yScaleStep));
     }
 
     @Override
     public void saveData() {
-        scalingMethod.xScaleFrom = Float.parseFloat(xScalePanel.inputFrom.getText());
-        scalingMethod.xScaleTo = Float.parseFloat(xScalePanel.inputTo.getText());
-        scalingMethod.xScaleStep = Float.parseFloat(xScalePanel.inputStep.getText());
+        scalingMethodIterator.xScaleFrom = Float.parseFloat(xScalePanel.inputFrom.getText());
+        scalingMethodIterator.xScaleTo = Float.parseFloat(xScalePanel.inputTo.getText());
+        scalingMethodIterator.xScaleStep = Float.parseFloat(xScalePanel.inputStep.getText());
 
-        scalingMethod.yScaleFrom = Float.parseFloat(yScalePanel.inputFrom.getText());
-        scalingMethod.yScaleTo = Float.parseFloat(yScalePanel.inputTo.getText());
-        scalingMethod.yScaleStep = Float.parseFloat(yScalePanel.inputStep.getText());
+        scalingMethodIterator.yScaleFrom = Float.parseFloat(yScalePanel.inputFrom.getText());
+        scalingMethodIterator.yScaleTo = Float.parseFloat(yScalePanel.inputTo.getText());
+        scalingMethodIterator.yScaleStep = Float.parseFloat(yScalePanel.inputStep.getText());
     }
 }

@@ -1,14 +1,14 @@
 package UI.methodBankForm.customizer;
 
-import model.AugmentationMethod;
-import model.brightness.BrightnessMethod;
 import UI.methodBankForm.customizer.inputs.InputNumberPanel;
+import model.AugmentationMethod;
+import model.brightness.BrightnessMethodIterator;
 
 import javax.swing.*;
 
 public class BrightnessCustomizerImpl extends JPanel implements Customizer {
     public InputNumberPanel brightnessPanel = new InputNumberPanel(0, 0, "Brightness: ");
-    public BrightnessMethod brightnessMethod;
+    public BrightnessMethodIterator brightnessMethodIterator;
 
     public BrightnessCustomizerImpl(int x, int y, int width, int height) {
         this.setBounds(x, y, width, height);
@@ -23,17 +23,17 @@ public class BrightnessCustomizerImpl extends JPanel implements Customizer {
 
     @Override
     public void loadData(AugmentationMethod method) {
-        brightnessMethod = (BrightnessMethod) method;
+        brightnessMethodIterator = (BrightnessMethodIterator) method;
 
-        brightnessPanel.inputFrom.setText(String.valueOf(brightnessMethod.brightnessFrom));
-        brightnessPanel.inputTo.setText(String.valueOf(brightnessMethod.brightnessTo));
-        brightnessPanel.inputStep.setText(String.valueOf(brightnessMethod.brightnessStep));
+        brightnessPanel.inputFrom.setText(String.valueOf(brightnessMethodIterator.brightnessFrom));
+        brightnessPanel.inputTo.setText(String.valueOf(brightnessMethodIterator.brightnessTo));
+        brightnessPanel.inputStep.setText(String.valueOf(brightnessMethodIterator.brightnessStep));
     }
 
     @Override
     public void saveData() {
-        brightnessMethod.brightnessFrom = Float.parseFloat(brightnessPanel.inputFrom.getText());
-        brightnessMethod.brightnessTo = Float.parseFloat(brightnessPanel.inputTo.getText());
-        brightnessMethod.brightnessStep = Float.parseFloat(brightnessPanel.inputStep.getText());
+        brightnessMethodIterator.brightnessFrom = Float.parseFloat(brightnessPanel.inputFrom.getText());
+        brightnessMethodIterator.brightnessTo = Float.parseFloat(brightnessPanel.inputTo.getText());
+        brightnessMethodIterator.brightnessStep = Float.parseFloat(brightnessPanel.inputStep.getText());
     }
 }

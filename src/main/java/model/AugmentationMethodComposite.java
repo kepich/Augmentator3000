@@ -1,7 +1,5 @@
 package model;
 
-import utils.ThreadPool;
-
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
@@ -21,7 +19,7 @@ public class AugmentationMethodComposite extends AugmentationMethod {
             method.setStorageInputAndMaxSizeAndPriority(tempStorage, maxSize, methods.indexOf(method));
             maxSize *= method.getEstimatedTime();
 
-            if(method == methods.lastElement()){
+            if (method == methods.lastElement()) {
                 method.storageResult = this.storageResult;
             }
             tempStorage = method.storageResult;
@@ -51,9 +49,5 @@ public class AugmentationMethodComposite extends AugmentationMethod {
             result *= method.getEstimatedTime();
         }
         return result;
-    }
-
-    public void add(AugmentationMethod method) {
-        this.methods.add(method);
     }
 }

@@ -13,7 +13,7 @@ public class InputNumberPanel extends JPanel {
     private JLabel toLabel;
     private JLabel stepLabel;
 
-    public InputNumberPanel(int x, int y, String description){
+    public InputNumberPanel(int x, int y, String description) {
         this.setLayout(null);
 
         this.setBounds(x, y, 300, 50);

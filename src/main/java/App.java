@@ -4,7 +4,7 @@ import static org.opencv.core.Core.NATIVE_LIBRARY_NAME;
 
 public class App {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         // TODO: Load data
         System.loadLibrary(NATIVE_LIBRARY_NAME);

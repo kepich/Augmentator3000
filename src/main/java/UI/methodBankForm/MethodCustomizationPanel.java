@@ -13,7 +13,7 @@ public class MethodCustomizationPanel extends JPanel {
     private GammaCustomizerImpl gammaCustomizerImpl;
 
     private Customizer activePanel;
-    private JButton saveButton = new JButton("Save");
+    private final JButton saveButton = new JButton("Save");
 
     public MethodCustomizationPanel(int x, int y, int width, int height) {
         this.setBounds(x, y, width, height);
@@ -24,8 +24,8 @@ public class MethodCustomizationPanel extends JPanel {
 
     private void initComponents() {
         scalingCustomizerImpl = new ScalingCustomizerImpl(
-                (int)(this.getWidth() * 0.05),
-                (int)(this.getHeight() * 0.05),
+                (int) (this.getWidth() * 0.05),
+                (int) (this.getHeight() * 0.05),
                 (int) (this.getWidth() * 0.90),
                 100
         );
@@ -33,8 +33,8 @@ public class MethodCustomizationPanel extends JPanel {
         this.add(scalingCustomizerImpl);
 
         brightnessCustomizerImpl = new BrightnessCustomizerImpl(
-                (int)(this.getWidth() * 0.05),
-                (int)(this.getHeight() * 0.05),
+                (int) (this.getWidth() * 0.05),
+                (int) (this.getHeight() * 0.05),
                 (int) (this.getWidth() * 0.90),
                 50
         );
@@ -42,8 +42,8 @@ public class MethodCustomizationPanel extends JPanel {
         this.add(brightnessCustomizerImpl);
 
         projectionCustomizerImpl = new ProjectionCustomizerImpl(
-                (int)(this.getWidth() * 0.05),
-                (int)(this.getHeight() * 0.05),
+                (int) (this.getWidth() * 0.05),
+                (int) (this.getHeight() * 0.05),
                 (int) (this.getWidth() * 0.90),
                 500
         );
@@ -51,8 +51,8 @@ public class MethodCustomizationPanel extends JPanel {
         this.add(projectionCustomizerImpl);
 
         gammaCustomizerImpl = new GammaCustomizerImpl(
-                (int)(this.getWidth() * 0.05),
-                (int)(this.getHeight() * 0.05),
+                (int) (this.getWidth() * 0.05),
+                (int) (this.getHeight() * 0.05),
                 (int) (this.getWidth() * 0.90),
                 500
         );
@@ -62,7 +62,7 @@ public class MethodCustomizationPanel extends JPanel {
         int buttonHeight = 30;
         int buttonWidth = 120;
 
-        saveButton.setBounds(this.getWidth() - buttonWidth - (int)(this.getWidth() * 0.1), this.getHeight() - buttonHeight, buttonWidth, buttonHeight);
+        saveButton.setBounds(this.getWidth() - buttonWidth - (int) (this.getWidth() * 0.1), this.getHeight() - buttonHeight, buttonWidth, buttonHeight);
         saveButton.setVisible(true);
         saveButton.addActionListener(e -> {
             activePanel.saveData();
@@ -71,13 +71,13 @@ public class MethodCustomizationPanel extends JPanel {
         this.add(saveButton);
     }
 
-    public void hideAll(){
+    public void hideAll() {
         scalingCustomizerImpl.setVisible(false);
         brightnessCustomizerImpl.setVisible(false);
         projectionCustomizerImpl.setVisible(false);
     }
 
-    public void showPanel(AugmentationMethod augmentationMethod){
+    public void showPanel(AugmentationMethod augmentationMethod) {
         hideAll();
         switch (augmentationMethod.type) {
             case SCALING -> {

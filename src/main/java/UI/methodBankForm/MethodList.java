@@ -15,7 +15,7 @@ public class MethodList extends JScrollPane {
         methods = list;
     }
 
-    public void addListSelectionListener(ListSelectionListener listSelectionListener){
+    public void addListSelectionListener(ListSelectionListener listSelectionListener) {
         methods.addListSelectionListener(listSelectionListener);
     }
 

@@ -7,11 +7,13 @@ import java.util.Vector;
 public abstract class AugmentationMethod implements Cloneable, Serializable, Runnable {
     public final AugmentationMethodType type;
     public final String name;
-
     public volatile Vector<BufferedImage> storageResult = new Vector<>();
+
     protected volatile Vector<BufferedImage> storageInput;
     protected volatile int maxInputSize;
     protected int priority;
+
+    protected ThreadPool threadPool = new ThreadPool();
 
     public void setStorageInputAndMaxSizeAndPriority(Vector<BufferedImage> storageInput, int maxInputSize, int priority) {
         this.storageInput = storageInput;

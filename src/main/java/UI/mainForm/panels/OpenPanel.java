@@ -14,7 +14,7 @@ public class OpenPanel extends JPanel {
         initComponents();
     }
 
-    public void addOpenButtonActionListener(ActionListener actionListener){
+    public void addOpenButtonActionListener(ActionListener actionListener) {
         this.bTempDir.addActionListener(actionListener);
     }
 
@@ -26,7 +26,7 @@ public class OpenPanel extends JPanel {
         this.add(this.bTempDir);
     }
 
-    public void setText(String text){
+    public void setText(String text) {
         lTempDir.setText(text);
     }
 }

@@ -2,13 +2,13 @@ package UI.methodBankForm.customizer;
 
 import UI.methodBankForm.customizer.inputs.InputNumberPanel;
 import model.AugmentationMethod;
-import model.gamma.GammaMethod;
+import model.gamma.GammaMethodIterator;
 
 import javax.swing.*;
 
 public class GammaCustomizerImpl extends JPanel implements Customizer {
     public InputNumberPanel gammaPanel = new InputNumberPanel(0, 0, "Gamma: ");
-    public GammaMethod gammaMethod;
+    public GammaMethodIterator gammaMethodIterator;
 
     public GammaCustomizerImpl(int x, int y, int width, int height) {
         this.setBounds(x, y, width, height);
@@ -23,17 +23,17 @@ public class GammaCustomizerImpl extends JPanel implements Customizer {
 
     @Override
     public void loadData(AugmentationMethod method) {
-        gammaMethod = (GammaMethod) method;
+        gammaMethodIterator = (GammaMethodIterator) method;
 
-        gammaPanel.inputFrom.setText(String.valueOf(gammaMethod.gammaFrom));
-        gammaPanel.inputTo.setText(String.valueOf(gammaMethod.gammaTo));
-        gammaPanel.inputStep.setText(String.valueOf(gammaMethod.gammaStep));
+        gammaPanel.inputFrom.setText(String.valueOf(gammaMethodIterator.gammaFrom));
+        gammaPanel.inputTo.setText(String.valueOf(gammaMethodIterator.gammaTo));
+        gammaPanel.inputStep.setText(String.valueOf(gammaMethodIterator.gammaStep));
     }
 
     @Override
     public void saveData() {
-        gammaMethod.gammaFrom = Float.parseFloat(gammaPanel.inputFrom.getText());
-        gammaMethod.gammaTo = Float.parseFloat(gammaPanel.inputTo.getText());
-        gammaMethod.gammaStep = Float.parseFloat(gammaPanel.inputStep.getText());
+        gammaMethodIterator.gammaFrom = Float.parseFloat(gammaPanel.inputFrom.getText());
+        gammaMethodIterator.gammaTo = Float.parseFloat(gammaPanel.inputTo.getText());
+        gammaMethodIterator.gammaStep = Float.parseFloat(gammaPanel.inputStep.getText());
     }
 }

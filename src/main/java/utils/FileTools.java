@@ -16,7 +16,7 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 public abstract class FileTools {
-    public static void createDir(Path path){
+    public static void createDir(Path path) {
         try {
             Files.createDirectories(path);
         } catch (IOException e) {
@@ -24,21 +24,19 @@ public abstract class FileTools {
         }
     }
 
-    public static void writeImages(AugmentationMethod method, int numberOfWritable, ProgressForm progressForm){
+    public static void writeImages(AugmentationMethod method, int numberOfWritable, ProgressForm progressForm) {
         int tempNumber = 0;
 
         while (tempNumber < numberOfWritable) {
             if (method.storageResult.size() > tempNumber) {
-                BufferedImage image = method.storageResult.firstElement();
-                if (image != null){
-                    method.storageResult.remove(image);
-                    writeImage(
-                            new File(AppState.resultPath + "\\" + method.name + "_" + tempNumber + ".jpg"),
-                            image
-                    );
-                    System.out.println(" Writing... [" + tempNumber + ": " + method.storageResult.size() + "("  + numberOfWritable+")]");
-                    progressForm.updateProgressBar((int) (((float) tempNumber++ / numberOfWritable) * 100));
-                }
+                BufferedImage image = method.storageResult.get(tempNumber);
+                method.storageResult.set(tempNumber, null);
+                writeImage(
+                        new File(AppState.resultPath + "\\" + method.name + "_" + tempNumber + ".jpg"),
+                        image
+                );
+                System.out.println(" Writing... [" + tempNumber + ": " + method.storageResult.size() + "(" + numberOfWritable + ")]");
+                progressForm.updateProgressBar((int) (((float) tempNumber++ / numberOfWritable) * 100));
             }
         }
         progressForm.updateProgressBar(100);
@@ -52,7 +50,7 @@ public abstract class FileTools {
         }
     }
 
-    public static Vector<BufferedImage> readImages(File file){
+    public static Vector<BufferedImage> readImages(File file) {
         File[] files = file.listFiles(new FileList.TextFileFilter());
         if (files != null) {
             return Arrays.stream(files).map(FileTools::readImage).collect(Collectors.toCollection(Vector::new));
@@ -61,7 +59,7 @@ public abstract class FileTools {
         }
     }
 
-    private static BufferedImage readImage(File file){
+    private static BufferedImage readImage(File file) {
         try {
             return ImageIO.read(file);
         } catch (IOException e) {
